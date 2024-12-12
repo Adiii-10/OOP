@@ -1,0 +1,32 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+
+int main(){
+  string filename="example.txt";
+  string datatowrite="Data written to file sucessfullly";
+  string dataread;
+  
+  ofstream outFile(filename);
+  if(!outFile){
+    cerr<<"Error:in creating file"<<endl;
+    return 1;
+  }
+  outFile<<datatowrite;
+  outFile.close();
+  cout<<"Data written ti file sucessfully"<<endl;
+  
+  ifstream inFile(filename);
+  if(!inFile){
+    cerr<<"Error:not open file for reading"<<endl;
+    return 1;
+  }
+  cout<<"reading data froem file:"<<endl;
+  while(getline(inFile,dataread)){
+    cout<<dataread<<endl;
+  }
+  inFile.close();
+  return 0;
+  
+}

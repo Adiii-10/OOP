@@ -1,0 +1,150 @@
+#include <iostream>
+#include <string>
+#include <stdexcept> // For exception handling
+using namespace std;
+
+class Student {
+private:
+    string name;
+    int rollNumber;
+    string studentClass;
+    char division;
+    string dateOfBirth;
+    string bloodGroup;
+    string contactAddress;
+    string telephoneNumber;
+    string drivingLicense;
+
+    static int studentCount; // Static member to track the number of students
+
+public:
+    // Default constructor
+    Student() : name("Unknown"), rollNumber(0), studentClass("Unknown"),
+                division('A'), dateOfBirth("01-01-2000"), bloodGroup("Unknown"),
+                contactAddress("Unknown"), telephoneNumber("Unknown"),
+                drivingLicense("Unknown") {
+        studentCount++;
+    }
+
+    // Parameterized constructor
+    Student(string n, int r, string c, char d, string dob, string bg,
+            string addr, string tel, string dl) :
+            name(n), rollNumber(r), studentClass(c), division(d),
+            dateOfBirth(dob), bloodGroup(bg), contactAddress(addr),
+            telephoneNumber(tel), drivingLicense(dl) {
+        studentCount++;
+    }
+
+    // Copy constructor
+    Student(const Student& s) {
+        name = s.name;
+        rollNumber = s.rollNumber;
+        studentClass = s.studentClass;
+        division = s.division;
+        dateOfBirth = s.dateOfBirth;
+        bloodGroup = s.bloodGroup;
+        contactAddress = s.contactAddress;
+        telephoneNumber = s.telephoneNumber;
+        drivingLicense = s.drivingLicense;
+        studentCount++;
+    }
+
+    // Destructor
+    ~Student() {
+        studentCount--;
+    }
+
+    // Static member function to get the count of students
+    static int getStudentCount() {
+        return studentCount;
+    }
+
+    // Member function to display student details
+    void display() const {
+        cout << "Name: " << name << endl;
+        cout << "Roll Number: " << rollNumber << endl;
+        cout << "Class: " << studentClass << endl;
+        cout << "Division: " << division << endl;
+        cout << "Date of Birth: " << dateOfBirth << endl;
+        cout << "Blood Group: " << bloodGroup << endl;
+        cout << "Contact Address: " << contactAddress << endl;
+        cout << "Telephone Number: " << telephoneNumber << endl;
+        cout << "Driving License: " << drivingLicense << endl;
+    }
+
+    // Inline function to update details
+    inline void updateDetails(string addr, string tel) {
+        contactAddress = addr;
+        telephoneNumber = tel;
+    }
+
+    // Friend class declaration
+    friend class Admin;
+
+    // Dynamic memory allocation for student details
+    static Student* createStudent() {
+        Student* s = new Student();
+        return s;
+    }
+
+    // Deleting dynamically allocated student object
+    static void deleteStudent(Student* s) {
+        delete s;
+    }
+};
+
+// Initialize static member
+int Student::studentCount = 0;
+
+// Friend class
+class Admin {
+public:
+    void updateDivision(Student& s, char div) {
+        s.division = div;
+    }
+};
+
+int main() {
+    try {
+        // Using dynamic memory allocation
+        Student* student1 = Student::createStudent();
+
+        // Updating details dynamically
+        student1->updateDetails("123 Street, City", "9876543210");
+
+        // Display student1 details
+        cout << "Student 1 Details:" << endl;
+        student1->display();
+
+        // Using parameterized constructor
+        Student student2("John Doe", 101, "10th", 'B', "15-08-2005", "O+", "456 Street, City", "9876541230", "DL-12345");
+
+        // Display student2 details
+        cout << "\nStudent 2 Details:" << endl;
+        student2.display();
+
+        // Copy constructor
+        Student student3 = student2;
+        cout << "\nStudent 3 (Copied from Student 2) Details:" << endl;
+        student3.display();
+
+        // Using friend class
+        Admin admin;
+        admin.updateDivision(student2, 'A');
+        cout << "\nStudent 2 Details After Admin Update:" << endl;
+        student2.display();
+
+        // Static function to get student count
+        cout << "\nTotal Students: " << Student::getStudentCount() << endl;
+
+        // Clean up dynamically allocated memory
+        Student::deleteStudent(student1);
+
+        cout << "\nTotal Students After Deletion: " << Student::getStudentCount() << endl;
+    } catch (const exception& e) {
+        cerr << "Exception occurred: " << e.what() << endl;
+    }
+
+    return 0;
+}
+

@@ -1,0 +1,33 @@
+#include<iostream>
+#include<map>
+#include<string>
+using namespace std;
+
+int main(){
+  map<string,int> x;
+  
+  x["Maharshtra"]=23567000 ;
+  x["Goa"]=4585442;
+  x["Manali"]=479823235;
+  x["Rajasthan"]=48765442 ;
+  x["Karanataka"]=677894534 ;
+  x["TamilNadu"]=78941554 ;
+  x["Gujarat"]=9874651;
+  
+  cout<<"Avaliable states:Goa,Rajasthan,Karnataka,Tamilnadu,Gujarat,Manali,Maharashtra"<<endl;
+  
+  string state;
+  cout<<"Enter the name of the state to get population:";
+  getline(cin,state);
+  
+  auto it=x.find(state);
+  if(it!=x.end()){
+    cout<<"The population of "<<state<<" is "<<it->second<<"."<<endl;
+  }
+  
+   else{
+    cout<<"State "<<state<<"not found in database";
+  
+  }
+  return 0;
+}
